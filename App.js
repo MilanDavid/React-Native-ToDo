@@ -36,10 +36,14 @@ export default function App() {
           onChangeText={handleTaskInput}
           value={taskText}
         />
-        <Button title="Add Task" onPress={handleAddTask} />
+        <Button
+          title="Add Task"
+          disabled={taskText.length === 0}
+          onPress={handleAddTask}
+        />
       </View>
       <View style={styles.taskContainer}>
-        <ScrollView>
+        <ScrollView alwaysBounceVertical={false}>
           <View>
             {taskList.map((goal, key) => (
               <View style={styles.taskItem}>
