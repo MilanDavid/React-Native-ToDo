@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
-  ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -18,13 +18,16 @@ export default function App() {
   };
 
   const handleAddTask = () => {
-    setTaskList((prevState) => [...prevState, taskText]);
+    setTaskList((prevState) => [
+      ...prevState,
+      { text: taskText, id: Math.random().toString() },
+    ]);
     setTaskText("");
   };
 
   const handleRemoveTask = (index) => {
     console.log("INDEX: ", index);
-    setTaskList((prevState) => prevState.filter((item, ind) => ind != index));
+    setTaskList((prevState) => prevState.filter((item, idx) => idx != index));
   };
 
   return (
@@ -43,20 +46,21 @@ export default function App() {
         />
       </View>
       <View style={styles.taskContainer}>
-        <ScrollView alwaysBounceVertical={false}>
-          <View>
-            {taskList.map((goal, key) => (
-              <View style={styles.taskItem}>
-                <Text key={key}>
-                  [{key + 1}]. {goal}
-                </Text>
-                <Text onPress={() => handleRemoveTask(key)}>
-                  <AntDesign name="close" size={24} color="red" />
-                </Text>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
+        <FlatList
+          data={taskList}
+          alwaysBounceVertical={false}
+          renderItem={(itemData) => (
+            <View style={styles.taskItem}>
+              <Text>
+                [{itemData.index + 1}]. {itemData.item.text}
+              </Text>
+              <Text onPress={() => handleRemoveTask(itemData.index)}>
+                <AntDesign name="close" size={24} color="red" />
+              </Text>
+            </View>
+          )}
+          keyExtractor={(item, index) => item.id}
+        />
       </View>
     </View>
   );
