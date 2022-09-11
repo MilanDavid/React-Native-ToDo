@@ -4,39 +4,40 @@ import TaskInput from "./components/TaskInput";
 import TaskItem from "./components/TaskItem";
 
 export default function App() {
-  const [taskText, setTaskText] = useState("");
   const [taskList, setTaskList] = useState([]);
 
-  const handleTaskInput = (text) => {
-    setTaskText(text);
-  };
-
-  const handleAddTask = () => {
+  const handleAddTask = (taskText) => {
     setTaskList((prevState) => [
       ...prevState,
-      { text: taskText, id: Math.random().toString() },
+      { text: taskText, id: Math.random().toString(), completed: false },
     ]);
-    setTaskText("");
+  };
+
+  const handleCompleteTask = (index) => {
+    setTaskList((prevState) =>
+      prevState.map((item, idx) =>
+        idx === index ? { ...item, completed: !item.completed } : item
+      )
+    );
   };
 
   const handleRemoveTask = (index) => {
-    console.log("INDEX: ", index);
     setTaskList((prevState) => prevState.filter((item, idx) => idx != index));
   };
 
   return (
     <View style={styles.appContainer}>
-      <TaskInput
-        handleAddTask={handleAddTask}
-        handleTaskInput={handleTaskInput}
-        taskText={taskText}
-      />
+      <TaskInput handleAddTask={handleAddTask} />
       <View style={styles.taskContainer}>
         <FlatList
           data={taskList}
           alwaysBounceVertical={false}
           renderItem={(itemData) => (
-            <TaskItem itemData={itemData} handleRemoveTask={handleRemoveTask} />
+            <TaskItem
+              itemData={itemData}
+              handleRemoveTask={handleRemoveTask}
+              handleCompleteTask={handleCompleteTask}
+            />
           )}
           keyExtractor={(item, index) => item.id}
         />

@@ -1,6 +1,18 @@
+import { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 
-const TaskInput = ({ handleAddTask, handleTaskInput, taskText }) => {
+const TaskInput = (props) => {
+  const [taskText, setTaskText] = useState("");
+
+  const handleTaskInput = (text) => {
+    setTaskText(text);
+  };
+
+  const handleAddTask = () => {
+    props.handleAddTask(taskText);
+    setTaskText("");
+  };
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
