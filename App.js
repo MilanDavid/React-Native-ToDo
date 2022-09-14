@@ -32,8 +32,8 @@ export default function App() {
   };
 
   return (
-    <>
-      <StatusBar style="light"/>
+    <React.StrictMode>
+      <StatusBar style="light" />
       <View style={styles.appContainer}>
         <Button title="Add new Task" onPress={handleModalIsVisable} />
         {modalIsVisable && (
@@ -58,7 +58,7 @@ export default function App() {
           />
         </View>
       </View>
-    </>
+    </React.StrictMode>
   );
 }
 
